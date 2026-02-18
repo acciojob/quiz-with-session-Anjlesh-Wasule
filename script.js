@@ -1,4 +1,51 @@
 //your JS code here.
+// ===== YOUR CODE STARTS HERE =====
+
+// DOM references
+const questionsElement = document.getElementById("questions");
+const submitButton = document.getElementById("submit");
+const scoreElement = document.getElementById("score");
+
+// Load saved progress from sessionStorage
+let userAnswers = JSON.parse(sessionStorage.getItem("progress")) || {};
+
+// Restore score from localStorage (if exists)
+const savedScore = localStorage.getItem("score");
+if (savedScore !== null) {
+  scoreElement.textContent = `Your score is ${savedScore} out of 5.`;
+}
+
+// Save answer to sessionStorage
+function saveAnswer(questionIndex, value) {
+  userAnswers[questionIndex] = value;
+  sessionStorage.setItem("progress", JSON.stringify(userAnswers));
+}
+
+// Handle answer selection (event delegation)
+questionsElement.addEventListener("change", (e) => {
+  if (e.target.type === "radio") {
+    const questionIndex = e.target.name.split("-")[1];
+    saveAnswer(questionIndex, e.target.value);
+  }
+});
+
+// Handle quiz submission
+submitButton.addEventListener("click", () => {
+  let score = 0;
+
+  for (let i = 0; i < questions.length; i++) {
+    if (userAnswers[i] === questions[i].answer) {
+      score++;
+    }
+  }
+
+  scoreElement.textContent = `Your score is ${score} out of 5.`;
+  localStorage.setItem("score", score);
+});
+
+// ===== YOUR CODE ENDS HERE =====
+
+
 
 // Do not change code below this line
 // This code will just display the questions to the screen
